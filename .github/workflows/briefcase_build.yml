@@ -1,0 +1,97 @@
+name: Briefcase Build
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    tags:
+      - 'v[0-9].*'
+
+jobs:
+  briefcase:
+    name: Bundle on ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04, macos-11, macos-12, windows-2022]
+        python-version: ["3.9"]
+      fail-fast: false
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Linux packages
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt update && sudo apt install -y tzdata gnupg ca-certificates
+          sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3B4FE6ACC0B21F32
+          echo "deb http://cz.archive.ubuntu.com/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/bionic.list
+          sudo apt-get update
+          sudo apt-get install libncurses5 libgdbm5 libffi6 libegl1 libpulse0 libpcsclite1
+
+      - name: Install Qt
+        if: runner.os == 'Linux'
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.4.0'
+
+      - name: Install Python libs
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install briefcase
+          python -m pip install MarkupSafe==2.1.1
+          python -m pip freeze
+
+      - name: Linux Create and Build Without Docker
+        if: runner.os == 'Linux'
+        run: |
+          briefcase create --no-docker
+          briefcase build --no-docker
+
+      - name: Windows / Mac Create and Build Bundle
+        if: runner.os != 'Linux'
+        run: |
+          briefcase create
+          briefcase build
+
+      - name: Package Mac
+        if: runner.os == 'macOS'
+        run: briefcase package --no-sign
+
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        run: briefcase package
+
+      - name: Package Linux
+        if: runner.os == 'Linux'
+        run: briefcase package --no-docker
+
+      - name: Upload Artifact for Linux
+        uses: actions/upload-artifact@v2
+        if: runner.os == 'Linux'
+        with:
+          name: smallapp-${{ github.ref_name }}-${{ matrix.os }}.AppImage
+          path: '**/*.AppImage'
+
+      - name: Upload Artifact for MacOS
+        uses: actions/upload-artifact@v2
+        if: runner.os == 'MacOS'
+        with:
+          name: smallapp-${{ github.ref_name }}-${{ matrix.os }}.dmg
+          path: '**/*.dmg'
+
+      - name: Upload Artifact for Windows
+        uses: actions/upload-artifact@v2
+        if: runner.os == 'Windows'
+        with:
+          name: smallapp-${{ github.ref_name }}-${{ matrix.os }}.msi
+          path: '**/*.msi'

@@ -1,0 +1,92 @@
+[tool.poetry]
+name = "smallapp"
+version = "0.1.0"
+description = "Small PyQt5 app to test build"
+authors = ["Gambhiro <gambhiro@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.9"
+pyqt5 = "~5.15.6"
+pyqtwebengine = "~5.15.6"
+appdirs = "~1.4.4"
+typer = "~0.4.0"
+#Pillow = "7.2.0"
+Pillow = [
+  { version = "7.2.0", platform = "linux"},
+  { version = "~9.0.0", platform = "win32" },
+  { version = "~9.0.0", platform = "darwin" },
+]
+MarkupSafe = "~2.1.1"
+Mako = "~1.1.6"
+Flask = "~2.2.2"
+Flask-Cors = "~3.0.10"
+importlib-metadata = "~4.4"
+
+[tool.poetry.scripts]
+smallapp = 'smallapp.runner:main'
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^5.5"
+
+[tool.pyright]
+pythonVersion = "3.9"
+typeCheckingMode = "basic"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.briefcase]
+project_name = "Small App"
+bundle = "io.github"
+# briefcase requires PEP440 version strings
+version = "0.1.0"
+url = "https://github.com/gambhiro/pyqt5-build-example"
+license = "MIT license"
+# Package will display this info
+author = "Gambhiro"
+author_email = "gambhiro@users.noreply.github.com"
+
+[tool.briefcase.app.smallapp]
+formal_name = "Small App"
+description = "Small PyQt5 app to test build"
+icon = "smallapp/assets/icons/appicons/smallapp"
+sources = ['smallapp']
+
+requires = [
+"PyQt5              >= 5.15.6,   < 5.16.0",
+"PyQtWebEngine      >= 5.15.6,   < 5.16.0",
+"appdirs            >= 1.4.4,    < 1.5.0",
+"typer              >= 0.4.0,    < 0.5.0",
+"MarkupSafe         == 2.1.1",
+"Mako               >= 1.1.6,    < 1.2.0",
+"Flask              >= 2.2.2,    < 2.3.0",
+"Flask-Cors         >= 3.0.10,   < 3.1.0",
+"importlib-metadata >= 4.4.0,    < 4.5.0",
+]
+
+[tool.briefcase.app.smallapp.macOS]
+requires = [
+"Pillow >= 9.0.0, < 9.1.0",
+]
+
+[tool.briefcase.app.smallapp.linux]
+requires = [
+"Pillow == 7.2.0",
+]
+
+system_requires = ["libtiff-dev"]
+
+[tool.briefcase.app.smallapp.windows]
+requires = [
+"Pillow >= 9.0.0, < 9.1.0",
+]
+
+# Mobile deployments
+[tool.briefcase.app.smallapp.iOS]
+requires = []
+
+[tool.briefcase.app.smallapp.android]
+requires = []
