@@ -38,7 +38,7 @@ jobs:
       - name: Windows Build
         if: runner.os == 'Windows'
         run: |
-          pyinstaller run.py --name smallapp --onefile -w --clean --noupx -i "smallapp\assets\icons\appicons\smallapp.icns" --add-data "smallapp\assets;smallapp\assets"
+          pyinstaller run.py --name smallapp --onefile -w --clean --noupx -i "smallapp\assets\icons\appicons\smallapp.ico" --add-data "smallapp\assets;smallapp\assets"
 
       - name: Upload Artifact for Windows
         uses: actions/upload-artifact@v2
