@@ -49,7 +49,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install briefcase
           python -m pip install MarkupSafe==2.1.1
-          python -m pip freeze
+          python -m pip install -r requirements.txt
 
       - name: Linux Create and Build Without Docker
         if: runner.os == 'Linux'
