@@ -13,11 +13,11 @@ pyqtwebengine = "~5.15.6"
 appdirs = "~1.4.4"
 typer = "~0.4.0"
 #Pillow = "7.2.0"
-Pillow = [
-  { version = "7.2.0", platform = "linux"},
-  { version = "~9.0.0", platform = "win32" },
-  { version = "~9.0.0", platform = "darwin" },
-]
+#Pillow = [
+#  { version = "7.2.0", platform = "linux"},
+#  { version = "~9.0.0", platform = "win32" },
+#  { version = "~9.0.0", platform = "darwin" },
+#]
 MarkupSafe = "~2.1.1"
 Mako = "~1.1.6"
 Flask = "~2.2.2"
@@ -67,22 +67,22 @@ requires = [
 "importlib-metadata >= 4.4.0,    < 4.5.0",
 ]
 
-[tool.briefcase.app.smallapp.macOS]
-requires = [
-"Pillow >= 9.0.0, < 9.1.0",
-]
+#[tool.briefcase.app.smallapp.macOS]
+#requires = [
+#"Pillow >= 9.0.0, < 9.1.0",
+#]
+#
+#[tool.briefcase.app.smallapp.linux]
+#requires = [
+#"Pillow == 7.2.0",
+#]
+#
+#system_requires = ["libtiff-dev"]
 
-[tool.briefcase.app.smallapp.linux]
-requires = [
-"Pillow == 7.2.0",
-]
-
-system_requires = ["libtiff-dev"]
-
-[tool.briefcase.app.smallapp.windows]
-requires = [
-"Pillow >= 9.0.0, < 9.1.0",
-]
+#[tool.briefcase.app.smallapp.windows]
+#requires = [
+#"Pillow >= 9.0.0, < 9.1.0",
+#]
 
 # Mobile deployments
 [tool.briefcase.app.smallapp.iOS]
